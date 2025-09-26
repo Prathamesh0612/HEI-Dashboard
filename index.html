@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduTrack - Academic Performance Management System</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="login-page" class="login-container">
+        <div class="login-card card">
+            <div class="card__body">
+                <h1>EduTrack</h1>
+                <p>Academic Performance Management System</p>
+                
+                <form id="login-form">
+                    <div class="form-group">
+                        <label class="form-label" for="role">Select Role</label>
+                        <select id="role" class="form-control" required>
+                            <option value="">Choose your role</option>
+                            <option value="student">Student</option>
+                            <option value="teacher">Teacher</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="email">Email</label>
+                        <input type="email" id="email" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="password">Password</label>
+                        <input type="password" id="password" class="form-control" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn--primary btn--full-width">Login</button>
+                </form>
+                
+                <div class="demo-credentials">
+                    <h4>Demo Credentials</h4>
+                    <div class="credential-item">
+                        <strong>Student:</strong> demo.student@university.edu / student123
+                    </div>
+                    <div class="credential-item">
+                        <strong>Teacher:</strong> demo.teacher@university.edu / teacher123
+                    </div>
+                    <div class="credential-item">
+                        <strong>Admin:</strong> demo.admin@university.edu / admin123
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Student Dashboard -->
+    <div id="student-dashboard" class="dashboard hidden">
+        <header class="dashboard-header">
+            <div class="container">
+                <div class="flex items-center justify-between">
+                    <div class="dashboard-title">
+                        <h1>Student Portal</h1>
+                        <span class="user-info" id="student-name"></span>
+                    </div>
+                    <button id="logout-btn" class="btn btn--outline">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="dashboard-content">
+            <div class="container">
+                <!-- Enhanced Tab Navigation -->
+                <div class="tab-navigation">
+                    <button class="tab-btn active" data-tab="student-dashboard-tab">🏠 Dashboard</button>
+                    <button class="tab-btn" data-tab="student-academic-tab">📚 Academic Records</button>
+                    <button class="tab-btn" data-tab="student-certificates-tab">🏆 Certificates</button>
+                    <button class="tab-btn" data-tab="student-attendance-tab">📍 GPS Attendance</button>
+                    <button class="tab-btn" data-tab="student-analytics-tab">📊 Analytics</button>
+                    <button class="tab-btn" data-tab="student-portfolio-tab">🎯 Portfolio</button>
+                </div>
+
+                <!-- Dashboard Tab -->
+                <div id="student-dashboard-tab" class="tab-content active">
+                    <div class="dashboard-grid">
+                        <div class="card metric-card">
+                            <div class="card__body">
+                                <h3>Academic Merit Score</h3>
+                                <div class="metric-value" id="student-merit-score">785</div>
+                                <p class="metric-change positive">+15 this month</p>
+                            </div>
+                        </div>
+                        <div class="card metric-card">
+                            <div class="card__body">
+                                <h3>CGPA</h3>
+                                <div class="metric-value" id="student-cgpa">8.5</div>
+                                <p class="metric-subtext">Current Semester</p>
+                            </div>
+                        </div>
+                        <div class="card metric-card">
+                            <div class="card__body">
+                                <h3>Attendance</h3>
+                                <div class="metric-value" id="student-attendance">87%</div>
+                                <p class="metric-subtext">This Month</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI Recommendations -->
+                    <div class="card section-card">
+                        <div class="card__body">
+                            <h2>AI Performance Insights</h2>
+                            <div id="ai-recommendations">
+                                <!-- AI insights will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Academic Records Tab -->
+                <div id="student-academic-tab" class="tab-content">
+                    <div class="card section-card">
+                        <div class="card__body">
+                            <h2>Academic Records</h2>
+                            <div id="academic-records">
+                                <div class="academic-info">
+                                    <h4>Student Information</h4>
+                                    <p><strong>Student ID:</strong> <span id="student-id">2021CS001</span></p>
+                                    <p><strong>Department:</strong> <span id="student-department">Computer Science</span></p>
+                                    <p><strong>Semester:</strong> <span id="student-semester">6</span></p>
+                                    <p><strong>Total Credits:</strong> <span id="student-credits">145</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Certificates Tab -->
+                <div id="student-certificates-tab" class="tab-content">
+                    <div class="card section-card">
+                        <div class="card__body">
+                            <h2>Certificate Upload & OCR Scanning</h2>
+                            <div class="certificate-upload">
+                                <input type="file" id="certificate-upload" accept=".pdf,.jpg,.jpeg,.png" class="form-control">
+                                <button id="upload-certificate-btn" class="btn btn--primary mt-8">Upload & Scan Certificate</button>
+                            </div>
+                            
+                            <div id="certificate-status" class="certificate-status mt-8">
+                                <!-- Upload status will appear here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card section-card">
+                        <div class="card__body">
+                            <h2>My Certificates</h2>
+                            <div id="student-certificates">
+                                <!-- Certificates will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GPS Attendance Tab -->
+                <div id="student-attendance-tab" class="tab-content">
+                    <div class="card section-card">
+                        <div class="card__body">
+                            <h2>GPS Attendance</h2>
+                            <div id="available-classes">
+                                <p>Available classes for attendance:</p>
+                                <div id="gps-classes-list">
+                                    <!-- Classes will be populated by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analytics Tab -->
+                <div id="student-analytics-tab" class="tab-content">
+                    <div class="card section-card">
+                        <div class="card__body">
+                            <h2>Performance Analytics</h2>
+                            <div class="chart-container" style="position: relative; height: 300px;">
+                                <canvas id="student-performance-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Portfolio Tab -->
+                <div id="student-portfolio-tab" class="tab-content">
+                    <div class="card section-card">
+                        <div class="card__body">
+                            <h2>Academic Portfolio & Achievements</h2>
+                            <div id="student-portfolio">
+                                <!-- Portfolio will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Teacher Dashboard -->
+    <div id="teacher-dashboard" class="dashboard hidden">
+        <header class="dashboard-header">
+            <div class="container">
+                <div class="flex items-center justify-between">
+                    <div class="dashboard-title">
+                        <h1>Teacher Portal</h1>
+                        <span class="user-info" id="teacher-name"></span>
+                    </div>
+                    <button id="logout-btn-teacher" class="btn btn--outline">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="dashboard-content">
+            <div class="container">
+                <!-- Enhanced Tab Navigation -->
+                <div class="tab-navigation">
+                    <button class="tab-btn active" data-tab="teacher-dashboard-tab">🏠 Dashboard</button>
+                    <button class="tab-btn" data-tab="teacher-classes-tab">🎓 My Classes & GPS</button>
+                    <button class="tab-btn" data-tab="teacher-students-tab">👥 Student Analysis</button>
+                    <button class="tab-btn" data-tab="teacher-verification-tab">✅ Certificate Queue</button>
+                    <button class="tab-btn" data-tab="teacher-department-tab">📈 Department Analytics</button>
+                    <button class="tab-btn" data-tab="teacher-reports-tab">📋 Reports</button>
+                </div>
+
+                <!-- Dashboard Tab -->
+                <div id="teacher-dashboard-tab" class="tab-content active">
+                    <div class="dashboard-grid">
+                        <div class="card metric-card">
+                            <div class="card__body">
+                                <h3>My Students</h3>
+                                <div class="metric-value" id="teacher-student-count">25</div>
+                                <p class="metric-subtext">Active Students</p>
+                            </div>
+                        </div>
+                        <div class="card metric-card">
+                            <div class="card__body">
+                                <h3>Pending Verifications</h3>
+                                <div class="metric-value" id="pending-verifications">3</div>
+                                <p class="metric-subtext">Certificates to Review</p>
+                            </div>
+                        </div>
+                        <div class="card metric-card">
+                            <div class="card__body">
+                                <h3>Department Avg</h3>
+                                <div class="metric-value" id="dept-average">758</div>
+                                <p class="metric-subtext">Merit Score</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Classes & GPS Tab -->
+                <div id="teacher-classes-tab" class="tab-content">
+                    <div class="card section-card">
+                        <div class="card__body">
+                            <h2>GPS Attendance Control</h2>
+                            <div id="teacher-courses">
+                                <!-- Courses will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card section-card">
+                        <div class="card__body">
+                            <h2>Today's Attendance</h2>
+                            <div id="attendance-list">
+                                <!-- Attendance list will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Student Analysis Tab -->
+                <div id="teacher-students-tab" class="tab-content">
+                    <div class="card section-card">
+                        <div class="card__body">
+                            <h2>Department Students Overview</h2>
+                            <div id="department-students">
+                                <!-- Student analysis will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Certificate Verification Tab -->
+                <div id="teacher-verification-tab" class="tab-content">
+                    <div class="card section-card">
+                        <div class="card__body">
+                            <h2>Pending Certificate Verifications</h2>
+                            <div id="pending-certificates">
+                                <!-- Pending certificates will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Department Analytics Tab -->
+                <div id="teacher-department-tab" class="tab-content">
+                    <div class="card section-card">
+                        <div class="card__body">
+                            <h2>Department Performance Analytics</h2>
+                            <div class="chart-container" style="position: relative; height: 300px;">
+                                <canvas id="teacher-dept-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reports Tab -->
+                <div id="teacher-reports-tab" class="tab-content">
+                    <div class="card section-card">
+                        <div class="card__body">
+                            <h2>Department Reports & Insights</h2>
+                            <div id="teacher-reports">
+                                <p>Generate and access department-specific reports and performance insights.</p>
+                                <button class="btn btn--primary" onclick="generateTeacherReport()">Generate Department Report</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="admin-dashboard" class="dashboard hidden">
+        <header class="dashboard-header">
+            <div class="container">
+                <div class="flex items-center justify-between">
+                    <div class="dashboard-title">
+                        <h1>Admin Portal</h1>
+                        <span class="user-info">System Administrator</span>
+                    </div>
+                    <button id="logout-btn-admin" class="btn btn--outline">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="dashboard-content">
+            <div class="container">
+                <!-- Enhanced Tab Navigation -->
+                <div class="tab-navigation">
+                    <button class="tab-btn active" data-tab="admin-dashboard-tab">🏠 Dashboard</button>
+                    <button class="tab-btn" data-tab="admin-departments-tab">🏢 Department Analytics</button>
+                    <button class="tab-btn" data-tab="admin-ai-reports-tab">🤖 AI Report Generator</button>
+                    <button class="tab-btn" data-tab="admin-permissions-tab">🔐 Permissions</button>
+                    <button class="tab-btn" data-tab="admin-integrations-tab">🔗 ERP Integration</button>
+                    <button class="tab-btn" data-tab="admin-settings-tab">⚙️ Settings</button>
+                    <button class="tab-btn" data-tab="admin-audit-tab">📝 Audit Logs</button>
+                </div>
+
+                <!-- Dashboard Tab -->
+                <div id="admin-dashboard-tab" class="tab-content active">
+                    <div class="dashboard-grid">
+                        <div class="card metric-card">
+                            <div class="card__body">
+                                <h3>Total Students</h3>
+                                <div class="metric-value">370</div>
+                                <p class="metric-subtext">Across all departments</p>
+                            </div>
+                        </div>
+                        <div class="card metric-card">
+                            <div class="card__body">
+                                <h3>Average Merit Score</h3>
+                                <div class="metric-value">729</div>
+                                <p class="metric-change positive">+12 this month</p>
+                            </div>
+                        </div>
+                        <div class="card metric-card">
+                            <div class="card__body">
+                                <h3>Overall Attendance</h3>
+                                <div class="metric-value">84%</div>
+                                <p class="metric-subtext">Institution Average</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Department Analytics Tab -->
+                <div id="admin-departments-tab" class="tab-content">
+                    <div class="card section-card">
+                        <div class="card__body">
+                            <h2>Department Analysis</h2>
+                            <div id="department-analysis">
+                                <!-- Department cards will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card section-card">
+                        <div class="card__body">
+                            <h2>Performance Analytics</h2>
+                            <div class="chart-grid">
+                                <div class="chart-container" style="position: relative; height: 300px;">
+                                    <canvas id="department-chart"></canvas>
+                                </div>
+                                <div class="chart-container" style="position: relative; height: 300px;">
+                                    <canvas id="performance-trend-chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Report Generator Tab -->
+                <div id="admin-ai-reports-tab" class="tab-content">
+                    <div class="card section-card">
+                        <div class="card__body">
+                            <h2>AI Report Generator</h2>
+                            <div class="report-generator">
+                                <div class="form-group">
+                                    <label class="form-label" for="report-template">Report Template</label>
+                                    <select id="report-template" class="form-control">
+                                        <option value="">Select Template</option>
+                                        <option value="naac">NAAC Assessment Report</option>
+                                        <option value="nba">NBA Accreditation Report</option>
+                                        <option value="custom">Custom Institutional Report</option>
+                                        <option value="department">Department Performance Report</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label" for="report-period">Report Period</label>
+                                    <select id="report-period" class="form-control">
+                                        <option value="current_month">Current Month</option>
+                                        <option value="current_semester">Current Semester</option>
+                                        <option value="academic_year">Academic Year</option>
+                                        <option value="custom_range">Custom Range</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="report-departments">Departments (Optional)</label>
+                                    <select id="report-departments" class="form-control" multiple>
+                                        <option value="all">All Departments</option>
+                                        <option value="computer_science">Computer Science</option>
+                                        <option value="electronics">Electronics</option>
+                                        <option value="mechanical">Mechanical</option>
+                                    </select>
+                                </div>
+
+                                <button id="generate-report-btn" class="btn btn--primary">Generate AI Report</button>
+                            </div>
+
+                            <div id="report-status" class="mt-8">
+                                <!-- Report generation status -->
+                            </div>
+
+                            <div id="report-queue" class="mt-8">
+                                <h3>Report Generation Queue</h3>
+                                <div id="report-queue-list">
+                                    <!-- Active reports will be shown here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Permissions Management Tab -->
+                <div id="admin-permissions-tab" class="tab-content">
+                    <div class="card section-card">
+                        <div class="card__body">
+                            <h2>Role & Permissions Management</h2>
+                            
+                            <div class="permissions-grid">
+                                <div class="permission-section">
+                                    <h3>Certificate Verification</h3>
+                                    <div class="permission-controls">
+                                        <div class="permission-item">
+                                            <label>
+                                                <input type="checkbox" checked> Teachers can verify certificates
+                                            </label>
+                                        </div>
+                                        <div class="permission-item">
+                                            <label>
+                                                <input type="checkbox" checked> Department-specific verification only
+                                            </label>
+                                        </div>
+                                        <div class="permission-item">
+                                            <label>
+                                                <input type="checkbox"> Auto-approve verified teacher decisions
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="permission-section">
+                                    <h3>GPS Attendance</h3>
+                                    <div class="permission-controls">
+                                        <div class="permission-item">
+                                            <label>
+                                                <input type="checkbox" checked> Teachers can enable/disable GPS
+                                            </label>
+                                        </div>
+                                        <div class="permission-item">
+                                            <label>
+                                                <input type="checkbox" checked> Teachers can mark manual attendance
+                                            </label>
+                                        </div>
+                                        <div class="permission-item">
+                                            <label>
+                                                <input type="checkbox"> Students can self-mark attendance
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="permission-section">
+                                    <h3>Reports & Analytics</h3>
+                                    <div class="permission-controls">
+                                        <div class="permission-item">
+                                            <label>
+                                                <input type="checkbox" checked> Teachers can view department reports
+                                            </label>
+                                        </div>
+                                        <div class="permission-item">
+                                            <label>
+                                                <input type="checkbox"> Teachers can generate AI reports
+                                            </label>
+                                        </div>
+                                        <div class="permission-item">
+                                            <label>
+                                                <input type="checkbox" checked> Students can view own analytics
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-8">
+                                <button class="btn btn--primary" onclick="savePermissions()">Save Permissions</button>
+                                <button class="btn btn--outline ml-8" onclick="resetPermissions()">Reset to Default</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card section-card">
+                        <div class="card__body">
+                            <h2>User Role Assignment</h2>
+                            <div id="user-roles">
+                                <!-- User role management will be populated -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ERP Integration Tab -->
+                <div id="admin-integrations-tab" class="tab-content">
+                    <div class="card section-card">
+                        <div class="card__body">
+                            <h2>ERP System Integrations</h2>
+                            
+                            <div id="erp-connections">
+                                <!-- ERP connections will be populated -->
+                            </div>
+
+                            <div class="mt-8">
+                                <button class="btn btn--primary" onclick="addNewERP()">Add New ERP Connection</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card section-card">
+                        <div class="card__body">
+                            <h2>Data Synchronization</h2>
+                            <div id="sync-status">
+                                <!-- Sync status will be populated -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Tab -->
+                <div id="admin-settings-tab" class="tab-content">
+                    <div class="card section-card">
+                        <div class="card__body">
+                            <h2>System Settings</h2>
+                            <div class="settings-grid">
+                                <div class="setting-item">
+                                    <h4>Merit Score Calculation</h4>
+                                    <p>Configure how merit scores are calculated and weighted.</p>
+                                    <button class="btn btn--outline btn--sm">Configure</button>
+                                </div>
+                                <div class="setting-item">
+                                    <h4>GPS Attendance Settings</h4>
+                                    <p>Set default GPS range and accuracy requirements.</p>
+                                    <button class="btn btn--outline btn--sm">Configure</button>
+                                </div>
+                                <div class="setting-item">
+                                    <h4>Notification Preferences</h4>
+                                    <p>Manage system-wide notification settings.</p>
+                                    <button class="btn btn--outline btn--sm">Configure</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Audit Logs Tab -->
+                <div id="admin-audit-tab" class="tab-content">
+                    <div class="card section-card">
+                        <div class="card__body">
+                            <h2>System Audit Logs</h2>
+                            <div id="audit-logs">
+                                <!-- Audit logs will be populated -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Student Detail Modal -->
+    <div id="student-detail-modal" class="modal hidden">
+        <div class="modal-overlay" id="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-student-name">Student Details</h2>
+                <button id="close-modal" class="btn btn--outline">Close</button>
+            </div>
+            <div class="modal-body">
+                <div id="student-detail-content">
+                    <!-- Student details will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ERP Configuration Modal -->
+    <div id="erp-config-modal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Configure ERP Integration</h2>
+                <button class="close-modal-btn btn btn--outline">Close</button>
+            </div>
+            <div class="modal-body">
+                <form id="erp-config-form">
+                    <div class="form-group">
+                        <label class="form-label">ERP System Name</label>
+                        <input type="text" class="form-control" id="erp-name" placeholder="e.g., University ERP System">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">System Type</label>
+                        <select class="form-control" id="erp-type">
+                            <option value="sis">Student Information System</option>
+                            <option value="academic">Academic Records</option>
+                            <option value="hr">HR Management</option>
+                            <option value="financial">Financial System</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">API Endpoint</label>
+                        <input type="url" class="form-control" id="erp-endpoint" placeholder="https://erp.university.edu/api">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">API Key</label>
+                        <input type="password" class="form-control" id="erp-api-key" placeholder="Enter API key">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Sync Frequency</label>
+                        <select class="form-control" id="erp-sync-freq">
+                            <option value="real_time">Real-time</option>
+                            <option value="hourly">Hourly</option>
+                            <option value="daily">Daily</option>
+                            <option value="weekly">Weekly</option>
+                        </select>
+                    </div>
+                    <div class="flex gap-8">
+                        <button type="button" class="btn btn--primary" onclick="saveERPConfig()">Save Configuration</button>
+                        <button type="button" class="btn btn--outline" onclick="testERPConnection()">Test Connection</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
